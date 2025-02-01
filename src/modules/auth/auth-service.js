@@ -1,5 +1,6 @@
-import { sql } from "../../lib/db.js";
 import bcrypt from "bcryptjs";
+
+import { sql } from "../../lib/db.js";
 
 export class AuthService {
   static async register(req, res) {
