@@ -12,5 +12,5 @@ app.use("/auth", authRouter);
 const { PORT } = process.env;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`);
+	console.log(`Server is running on ${PORT}`);
 });
