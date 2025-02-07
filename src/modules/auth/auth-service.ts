@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { Request, Response } from "express";
 
 import { db } from "@/lib/connection/db";
-import { roles, user_roles, users } from "@/lib/schemas/index.js";
+import { roles, user_roles, users } from "@/lib/schemas/index";
 
 export class AuthService {
 	static async register(req: Request, res: Response) {

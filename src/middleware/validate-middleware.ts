@@ -11,7 +11,7 @@ export function validateMiddleware(schema: z.ZodObject<any, any>) {
 			if (error instanceof ZodError) {
 				const errorMessages = error.errors.map(
 					(issue: ZodIssueOptionalMessage) => ({
-						message: `${issue.path.join(".")} is ${issue.message}`
+						message: `${issue.message}`
 					})
 				);
 				res.status(400).json({ error: "Invalid data", details: errorMessages });

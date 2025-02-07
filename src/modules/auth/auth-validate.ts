@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { insertUsersSchema } from "@/lib/schemas";
 
-export const loginSchema = insertUsersSchema
+export const authSchema = insertUsersSchema
 	.pick({
 		email: true
 	})

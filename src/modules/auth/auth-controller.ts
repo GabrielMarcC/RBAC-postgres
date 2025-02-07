@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 import { db } from "@/lib/connection/db";
-import { users } from "@/lib/schemas";
+import { roles, user_roles, users } from "@/lib/schemas";
 
 const { JWT_SECRET, JWT_EXPIRATION } = process.env;
 
@@ -29,31 +29,21 @@ export class AuthController {
 				return;
 			}
 
-			const userWithRoles = (await db.query.users.findFirst({
-				where: eq(users.id, user.id),
-				with: {
-					user_roles: {
-						role: true
-					}
-				}
-			})) as typeof users.$inferSelect & {
-				user_roles: { role: { name: string } }[];
-			};
+			const search = await db
+				.select()
+				.from(roles)
+				.innerJoin(user_roles, eq(roles.id, user_roles.user_id));
 
-			if (!userWithRoles) {
+			if (!search) {
 				res.status(400).json({ message: "User roles not found" });
 				return;
 			}
 
-			const roleNames = userWithRoles.user_roles.map((ur) => ur.role.name);
+			const role = search.map((r) => r.roles.name);
 
-			const token = jwt.sign(
-				{ userId: user.id, roles: roleNames },
-				JWT_SECRET!,
-				{
-					expiresIn: JWT_EXPIRATION
-				}
-			);
+			const token = jwt.sign({ userId: user.id, roles: role }, JWT_SECRET!, {
+				expiresIn: JWT_EXPIRATION
+			});
 
 			res.json({ token });
 		} catch (error) {

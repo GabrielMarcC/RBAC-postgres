@@ -1,21 +1,21 @@
 import { Request, Response, Router } from "express";
 
-import { validateMiddleware } from "@/middleware/validate-middleware.js";
+import { validateMiddleware } from "@/middleware/validate-middleware";
 
-import { AuthController } from "./auth-controller.js";
-import { AuthService } from "./auth-service.js";
-import { loginSchema } from "./auth-validate.js";
-import { AuthMiddleware } from "../../middleware/auth-middleware.js";
+import { AuthController } from "./auth-controller";
+import { AuthService } from "./auth-service";
+import { authSchema } from "./auth-validate";
+import { AuthMiddleware } from "../../middleware/auth-middleware";
 
 const authRouter = Router();
 
-authRouter.post("/register", AuthService.register);
-
 authRouter.post(
-	"/login",
-	validateMiddleware(loginSchema),
-	AuthController.login
+	"/register",
+	validateMiddleware(authSchema),
+	AuthService.register
 );
+
+authRouter.post("/login", validateMiddleware(authSchema), AuthController.login);
 
 authRouter.get(
 	"/profile",
